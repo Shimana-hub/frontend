@@ -1,29 +1,32 @@
-"use client"
+import React from "react";
 
-export default function Navbar() {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container">
-        <a className="navbar-brand fw-bold" href="#">
-          ServiceHub
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item"><a className="nav-link" href="#">Home</a></li>
-            <li className="nav-item"><a className="nav-link" href="#">Services</a></li>
-            <li className="nav-item"><a className="nav-link" href="#">How it Works</a></li>
-            <li className="nav-item"><a className="nav-link" href="#">Contact</a></li>
-          </ul>
+const Nav = () => (
+  <nav className="position-relative border-bottom sophisticated-nav" style={{ zIndex: 10 }}>
+    <div className="container-fluid">
+      <div className="d-flex justify-content-between align-items-center py-3">
+        <div className="d-flex align-items-center">
+          <h1 className="h2 fw-bold mb-0" style={{ color: "var(--foreground)" }}>
+            ServiceHub
+          </h1>
+        </div>
+        <div className="d-none d-md-flex align-items-center">
+          <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
+            Find Services
+          </a>
+          <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
+            Become a Provider
+          </a>
+          <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
+            How it Works
+          </a>
+        </div>
+        <div className="d-flex align-items-center">
+          <button className="btn btn-outline-secondary me-3">Sign In</button>
+          <button className="btn btn-primary">Get Started</button>
         </div>
       </div>
-    </nav>
-  )
-}
+    </div>
+  </nav>
+);
+
+export default Nav;

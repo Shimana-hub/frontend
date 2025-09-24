@@ -1,4 +1,6 @@
 import { Search, Star, Shield, Clock, ArrowRight } from "lucide-react"
+import Nav from "./components/common/Nav";
+import Footer from "./components/common/Footer";
 
 export default function HomePage() {
   const services = [
@@ -59,32 +61,7 @@ export default function HomePage() {
       </div>
 
       {/* Navigation */}
-      <nav className="position-relative border-bottom sophisticated-nav" style={{ zIndex: 10 }}>
-        <div className="container-fluid">
-          <div className="d-flex justify-content-between align-items-center py-3">
-            <div className="d-flex align-items-center">
-              <h1 className="h2 fw-bold mb-0" style={{ color: "var(--foreground)" }}>
-                ServiceHub
-              </h1>
-            </div>
-            <div className="d-none d-md-flex align-items-center">
-              <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-                Find Services
-              </a>
-              <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-                Become a Provider
-              </a>
-              <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-                How it Works
-              </a>
-            </div>
-            <div className="d-flex align-items-center">
-              <button className="btn btn-outline-secondary me-3">Sign In</button>
-              <button className="btn btn-primary">Get Started</button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       {/* Hero Section */}
       <section className="position-relative py-5" style={{ zIndex: 10, paddingTop: "5rem", paddingBottom: "8rem" }}>
@@ -297,90 +274,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="position-relative border-top sophisticated-footer" style={{ zIndex: 10 }}>
-        <div className="sophisticated-footer-bg"></div>
-        <div className="container py-5 position-relative">
-          <div className="row g-4">
-            <div className="col-md-3">
-              <h5 className="fw-semibold mb-3" style={{ color: "var(--foreground)" }}>
-                ServiceHub
-              </h5>
-              <p style={{ color: "var(--muted-foreground)" }}>
-                Connecting you with trusted service providers for all your needs.
-              </p>
-            </div>
-            <div className="col-md-3">
-              <h6 className="fw-semibold mb-3" style={{ color: "var(--foreground)" }}>
-                Services
-              </h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Home Services
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Business Services
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Emergency Services
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-3">
-              <h6 className="fw-semibold mb-3" style={{ color: "var(--foreground)" }}>
-                Company
-              </h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    About Us
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Contact
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Careers
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-3">
-              <h6 className="fw-semibold mb-3" style={{ color: "var(--foreground)" }}>
-                Support
-              </h6>
-              <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Help Center
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Safety
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none sophisticated-footer-link">
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-top pt-4 mt-4 text-center" style={{ color: "var(--muted-foreground)" }}>
-            <p className="mb-0">&copy; 2025 ServiceHub. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
