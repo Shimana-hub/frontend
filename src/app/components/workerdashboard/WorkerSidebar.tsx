@@ -1,20 +1,39 @@
 "use client";
 import React from "react";
+import NairaIcon from "../NairaIcon";
+
 import {
   Home,
-  FileText,
+  Briefcase,
   Calendar,
   MessageCircle,
   Settings,
 } from "lucide-react";
 
-export default function ClientSidebar(): React.ReactElement {
+export default function WorkerSidebar(): React.ReactElement {
   return (
-    <aside className="d-flex flex-column align-items-center justify-content-start p-4" style={{ minWidth: '280px', maxWidth: '320px', background: 'rgba(245,248,255,0.85)', borderRight: '1px solid var(--border)', minHeight: '100vh', boxShadow: '0 0 24px 0 rgba(52,84,250,0.04)' }}>
-      <div className="w-100" style={{ position: 'sticky', top: '4rem' }}>
-        <div className="card shadow-sm mb-4 sophisticated-sidebar-card" style={{ background: 'rgba(255,255,255,0.7)', borderRadius: '1.5rem', boxShadow: '0 2px 12px 0 rgba(52,84,250,0.08)' }}>
+    <aside
+      className="d-flex flex-column align-items-center justify-content-start p-4"
+      style={{
+        minWidth: "280px",
+        maxWidth: "320px",
+        background: "rgba(245,248,255,0.85)",
+        borderRight: "1px solid var(--border)",
+        minHeight: "100vh",
+        boxShadow: "0 0 24px 0 rgba(52,84,250,0.04)",
+      }}
+    >
+      <div className="w-100" style={{ position: "sticky", top: "4rem" }}>
+        <div
+          className="card shadow-sm mb-4 sophisticated-sidebar-card"
+          style={{
+            background: "rgba(255,255,255,0.7)",
+            borderRadius: "1.5rem",
+            boxShadow: "0 2px 12px 0 rgba(52,84,250,0.08)",
+          }}
+        >
           <div className="card-body text-center">
-            {/* avatar placeholder - replace with <img /> if you have one */}
+            {/* avatar placeholder */}
             <div
               className="rounded-circle mb-3"
               style={{
@@ -30,13 +49,13 @@ export default function ClientSidebar(): React.ReactElement {
               className="mb-0 fw-semibold"
               style={{ color: "var(--foreground)" }}
             >
-              Shimana Yagba
+               Shimana Yagba
             </h6>
             <p
               className="small mb-0"
               style={{ color: "var(--muted-foreground)" }}
             >
-              Client
+              Service Provider
             </p>
           </div>
         </div>
@@ -52,13 +71,19 @@ export default function ClientSidebar(): React.ReactElement {
             href="#"
             className="list-group-item list-group-item-action d-flex align-items-center"
           >
-            <FileText className="me-2" /> My Requests
+            <Briefcase className="me-2" /> Job Requests
           </a>
           <a
             href="#"
             className="list-group-item list-group-item-action d-flex align-items-center"
           >
-            <Calendar className="me-2" /> Bookings
+            <Calendar className="me-2" /> Active Jobs
+          </a>
+          <a
+            href="#"
+            className="list-group-item list-group-item-action d-flex align-items-center"
+          >
+            <NairaIcon size={24} color="#3454fa" /> Earnings
           </a>
           <a
             href="#"

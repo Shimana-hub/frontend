@@ -11,13 +11,13 @@ const Nav = () => (
         </div>
         <div className="d-none d-md-flex align-items-center">
           <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-            Find Services
+            About Us
           </a>
           <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-            Become a Provider
+            FAQs
           </a>
           <a href="#" className="text-decoration-none me-4 sophisticated-nav-link">
-            How it Works
+            Contact Us
           </a>
         </div>
         <div className="d-flex align-items-center">

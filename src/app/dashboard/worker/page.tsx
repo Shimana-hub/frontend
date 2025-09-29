@@ -1,18 +1,18 @@
 import React from "react";
 import Nav from "../../components/common/Nav";
 import Footer from "../../components/common/Footer";
-import ClientSidebar from "../../components/clientdashboard/ClientSidebar";
-import DashboardHeader from "../../components/clientdashboard/DashboardHeader";
-import ClientStats from "../../components/clientdashboard/ClientStats";
-import RecentJobs from "../../components/clientdashboard/RecentJobs";
+import WorkerSidebar from "../../components/workerdashboard/WorkerSidebar";
+import DashboardHeader from "../../components/workerdashboard/DashboardHeader";
+import WorkerStats from "../../components/workerdashboard/WorkerStats";
+import JobRequests from "../../components/workerdashboard/JobRequests";
 
-export default function ClientDashboardPage(): React.ReactElement {
+export default function WorkerDashboardPage(): React.ReactElement {
   return (
     <div
       className="min-vh-100 position-relative overflow-hidden"
       style={{ backgroundColor: "var(--background)" }}
     >
-      {/* background orbs and patterns (same as home) */}
+
       <div
         className="position-fixed w-100 h-100 overflow-hidden"
         style={{ pointerEvents: "none", zIndex: 0 }}
@@ -34,21 +34,38 @@ export default function ClientDashboardPage(): React.ReactElement {
 
       <Nav />
 
-      <main className="d-flex flex-row align-items-stretch justify-content-stretch min-vh-100 w-100 position-relative p-0" style={{ zIndex: 10 }}>
+      <main
+        className="d-flex flex-row align-items-stretch justify-content-stretch min-vh-100 w-100 position-relative p-0"
+        style={{ zIndex: 10 }}
+      >
         {/* Sidebar */}
-        <aside className="d-none d-lg-block" style={{ minWidth: '280px', maxWidth: '320px', background: 'rgba(255,255,255,0.08)', borderRight: '1px solid var(--border)', minHeight: '100vh' }}>
-          <ClientSidebar />
+        <aside
+          className="d-none d-lg-block"
+          style={{
+            minWidth: "280px",
+            maxWidth: "320px",
+            background: "rgba(255,255,255,0.08)",
+            borderRight: "1px solid var(--border)",
+            minHeight: "100vh",
+          }}
+        >
+          <WorkerSidebar />
         </aside>
+
         {/* Main dashboard content */}
-        <section className="flex-grow-1 d-flex flex-column justify-content-center align-items-stretch p-4" style={{ minHeight: '100vh' }}>
+        <section
+          className="flex-grow-1 d-flex flex-column justify-content-start align-items-stretch p-4"
+          style={{ minHeight: "100vh" }}
+        >
           <DashboardHeader
-            name="Shimana"
-            subtitle="Overview of your requests and upcoming bookings"
+            name="Shimana Yagba"
+            subtitle="Manage your jobs and earnings"
+            status="Available"
           />
 
-          <ClientStats />
+          <WorkerStats />
 
-          <RecentJobs />
+          <JobRequests />
 
           <div className="card shadow-sm mb-4">
             <div className="card-body">
@@ -60,10 +77,13 @@ export default function ClientDashboardPage(): React.ReactElement {
               </h5>
               <div className="d-flex gap-2 mt-3 flex-wrap">
                 <a className="btn btn-primary" href="#">
-                  Post new request
+                  Update Availability
                 </a>
                 <a className="btn btn-outline-secondary" href="#">
-                  Browse providers
+                  View Earnings
+                </a>
+                <a className="btn btn-outline-secondary" href="#">
+                  Edit Profile
                 </a>
               </div>
             </div>
