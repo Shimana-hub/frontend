@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login, type TokenResponse } from "../../services/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -9,109 +10,120 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "client", // default
   });
 
-  const [status, setStatus] = useState({ error: "", success: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus({ error: "", success: "" });
+    setError("");
+    setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      // The login function in auth.ts already handles token storage
+      await login({
+        email: formData.email.trim(),
+        password: formData.password,
       });
 
-      if (res.ok) {
-        const data = await res.json();
-
-        // save token (example: localStorage)
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("role", formData.role);
-
-        setStatus({ success: "Login successful! Redirecting...", error: "" });
-
-        // redirect by role
-        setTimeout(() => {
-          if (formData.role === "admin") {
-            router.push("/dashboard/admin");
-          } else if (formData.role === "serviceman") {
-            router.push("/dashboard/serviceman");
-          } else {
-            router.push("/dashboard/client");
-          }
-        }, 1200);
-      } else {
-        const data = await res.json();
-        setStatus({ error: data.message || "Invalid credentials.", success: "" });
-      }
-    } catch {
-      setStatus({ error: "Something went wrong. Try again.", success: "" });
+      // Redirect user after successful login
+      router.push("/");
+      
+    } catch (err: any) {
+      setError(err.message || "Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "500px" }}>
+    <div className="container mt-5" style={{ maxWidth: "400px" }}>
       <h2 className="mb-4">Login</h2>
 
-      {status.error && <div className="alert alert-danger">{status.error}</div>}
-      {status.success && (
-        <div className="alert alert-success">{status.success}</div>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
-          <label className="form-label">Email address</label>
+          <label htmlFor="email" className="form-label">
+            Email address
+          </label>
           <input
             type="email"
             className="form-control"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading}
+            autoComplete="email"
           />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Password</label>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            minLength={6}
+            disabled={loading}
+            autoComplete="current-password"
           />
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Login as</label>
-          <select
-            className="form-select"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <option value="client">Client</option>
-            <option value="serviceman">Serviceman</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-
-        <button type="submit" className="btn btn-primary w-100">
-          Login
+        <button
+          type="submit"
+          className="btn btn-primary w-100 py-2"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span 
+                className="spinner-border spinner-border-sm me-2" 
+                role="status" 
+                aria-hidden="true"
+              ></span>
+              Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
+
+      {/* Optional: Add links for navigation */}
+      <div className="mt-3 text-center">
+        <p className="mb-1">
+          Don't have an account?{" "}
+          <a href="/auth/register/client" className="text-decoration-none">
+            Register as Client
+          </a>
+        </p>
+        <p className="mb-0">
+          <a href="/auth/register/serviceman" className="text-decoration-none">
+            Register as Serviceman
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

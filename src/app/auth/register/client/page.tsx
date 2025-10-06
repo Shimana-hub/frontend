@@ -2,12 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { registerClient } from "../../../services/auth";
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  terms: boolean;
+}
 
 export default function ClientRegisterPage() {
   const router = useRouter();
 
   // form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
@@ -17,20 +26,22 @@ export default function ClientRegisterPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // handle input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    let checked = false;
-    if (type === "checkbox") {
-      checked = (e.target as HTMLInputElement).checked;
-    }
+    const checked = type === "checkbox" ? (e.target as HTMLInputElement).checked : false;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   // handle submit
@@ -38,34 +49,40 @@ export default function ClientRegisterPage() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
+    // Validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
+      setLoading(false);
       return;
     }
+    
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
+    
     if (!formData.terms) {
       setError("You must accept the Terms of Service.");
+      setLoading(false);
       return;
     }
 
     try {
-      // Call backend API (to be provided by Peter)
-      // Example endpoint: POST /api/register/client
-      const res = await fetch("http://localhost:8000/api/register/client", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      await registerClient({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
       });
 
-      if (res.ok) {
-        setSuccess("Registration successful!");
-        setTimeout(() => router.push("/auth/login"), 1500);
-      } else {
-        const data = await res.json();
-        setError(data.message || "Registration failed.");
-      }
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setSuccess("Registration successful! Redirecting to login...");
+      setTimeout(() => router.push("/auth/login"), 1500);
+    } catch (err: any) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,57 +90,83 @@ export default function ClientRegisterPage() {
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
       <h2 className="mb-4">Client Registration</h2>
 
-      {error && <div className="alert alert-danger">{error}</div>}
-      {success && <div className="alert alert-success">{success}</div>}
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+      
+      {success && (
+        <div className="alert alert-success" role="alert">
+          {success}
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
-          <label className="form-label">Full Name</label>
+          <label htmlFor="name" className="form-label">
+            Full Name
+          </label>
           <input
             type="text"
             className="form-control"
+            id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
+            disabled={loading}
           />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Email address</label>
+          <label htmlFor="email" className="form-label">
+            Email address
+          </label>
           <input
             type="email"
             className="form-control"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading}
           />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Password</label>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
             minLength={6}
+            disabled={loading}
           />
+          <div className="form-text">Password must be at least 6 characters long.</div>
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Confirm Password</label>
+          <label htmlFor="confirmPassword" className="form-label">
+            Confirm Password
+          </label>
           <input
             type="password"
             className="form-control"
+            id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             required
             minLength={6}
+            disabled={loading}
           />
         </div>
 
@@ -131,18 +174,30 @@ export default function ClientRegisterPage() {
           <input
             className="form-check-input"
             type="checkbox"
+            id="termsCheck"
             name="terms"
             checked={formData.terms}
             onChange={handleChange}
-            id="termsCheck"
+            disabled={loading}
           />
           <label className="form-check-label" htmlFor="termsCheck">
             I agree to the Terms of Service
           </label>
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">
-          Register
+        <button 
+          type="submit" 
+          className="btn btn-primary w-100 py-2"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Registering...
+            </>
+          ) : (
+            "Register"
+          )}
         </button>
       </form>
     </div>

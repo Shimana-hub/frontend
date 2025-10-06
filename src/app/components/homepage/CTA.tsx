@@ -2,7 +2,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 
-export default function Features(): React.ReactElement {
+export default function CTA(): React.ReactElement {
   
   return (
     <section className="position-relative py-5" style={{ zIndex: 10 }}>
